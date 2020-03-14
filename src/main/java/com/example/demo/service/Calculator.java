@@ -14,6 +14,8 @@ import org.springframework.ws.soap.SoapMessage;
 import com.example.calculator.wsdl.Add;
 import com.example.calculator.wsdl.AddResponse;
 import com.example.calculator.wsdl.ObjectFactory;
+import com.example.calculator.wsdl.Subtract;
+import com.example.calculator.wsdl.SubtractResponse;
 
 
 public class Calculator extends WebServiceGatewaySupport {
@@ -41,5 +43,23 @@ public class Calculator extends WebServiceGatewaySupport {
 		});
 		          
 		return response.getAddResult(); 
+	}
+	
+	public int subtract(int x, int y) {
+		String soapAction = soapActionURL + "Subtract";
+		ObjectFactory obf = new ObjectFactory();
+		Subtract sub = obf.createSubtract();
+		sub.setIntA(x);
+		sub.setIntB(y);
+		log.info("subtracing two numbers: "+ x+" and "+ y);
+		SubtractResponse response = (SubtractResponse)getWebServiceTemplate().marshalSendAndReceive(sub, new WebServiceMessageCallback() {
+			
+			@Override
+			public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+				((SoapMessage)message).setSoapAction(soapAction);
+				
+			}
+		});
+		return response.getSubtractResult();
 	}
 }

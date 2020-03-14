@@ -15,9 +15,12 @@ public class CalculatorController {
 	Calculator calc = context.getBean(Calculator.class);
 	
 	
-	
 	@GetMapping({"/", "/add"})
 	public int add() {
 		return calc.add(7, 10);
+	}
+	@GetMapping("/subtract")
+	public int subtract() {
+		return calc.subtract(6, 1);
 	}
 }
